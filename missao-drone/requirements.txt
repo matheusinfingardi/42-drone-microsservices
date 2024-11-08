@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+mavsdk
+requests
+python-dotenv
