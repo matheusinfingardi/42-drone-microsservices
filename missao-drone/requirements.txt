@@ -3,3 +3,4 @@ uvicorn
 mavsdk
 requests
 python-dotenv
+gunicorn
