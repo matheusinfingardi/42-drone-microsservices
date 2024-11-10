@@ -3,21 +3,21 @@
 from fastapi import APIRouter, HTTPException
 from src.adapters.repositories.drone_repository import DroneRepository
 
-# Instancia o repositório
+# Instância do repositório
 drone_repo = DroneRepository()
 
-# Criando o router para gerenciar as rotas relacionadas a drones
+# Criação do router para gerenciar as rotas de drones
 router = APIRouter()
 
-# Endpoint GET para obter um drone pelo 'drone_id'
+# Endpoint GET para buscar o drone pelo 'drone_id'
 @router.get("/drones/{drone_id}")
 async def get_drone(drone_id: str):
     try:
-        # Obtém o drone com o 'drone_id' fornecido
+        # Busca o drone no repositório
         drone = await drone_repo.get_drone_by_id(drone_id)
 
         if drone:
-            return {"drone": drone}  # Retorna os dados do drone encontrado
+            return {"drone": drone}  # Retorna o drone se encontrado
         else:
             raise HTTPException(status_code=404, detail="Drone não encontrado.")
     except Exception as e:
