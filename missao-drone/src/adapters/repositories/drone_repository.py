@@ -1,29 +1,18 @@
 # src/adapters/repositories/drone_repository.py
 
-from mavsdk import System
-from src.domain.repositories.drone_interface import DroneInterface
+from supabase import create_client
 from src.settings import settings
 
-class DroneRepository(DroneInterface):
-    async def connect(self, drone_id: str) -> bool:
-        # Busca o endereço do drone baseado no drone_id no Supabase
-        response = settings.supabase.table("drones").select("address").eq("drone_id", drone_id).single().execute()
+class DroneRepository:
+    def __init__(self):
+        # Configuração do cliente do Supabase
+        self.supabase = create_client(settings.SUPABASE_URL, settings.SUPABASE_KEY)
 
-        if response.status_code != 200:
-            raise Exception("Erro ao buscar endereço do drone no Supabase.")
-        
-        address = response.data.get("address")
-        
-        if not address:
-            raise Exception(f"Endereço do drone com id {drone_id} não encontrado no banco de dados.")
-        
-        # Conectar ao drone
-        drone = System()
-        await drone.connect(system_address=address)
-        
-        # Espera pela conexão
-        async for state in drone.core.connection_state():
-            if state.is_connected:
-                return True
-        
-        return False
+    async def get_drone_by_id(self, drone_id: str):
+        # Busca na tabela 'drone' pelo 'drone_id'
+        response = self.supabase.table('drone').select('*').eq('drone_id', drone_id).execute()
+
+        if response.status_code == 200 and len(response.data) > 0:
+            return response.data[0]  # Retorna o primeiro drone encontrado
+
+        return None  # Se não encontrar nenhum drone com esse drone_id
