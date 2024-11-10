@@ -9,7 +9,7 @@ class DroneService:
 
     def get_drone_by_id(self, drone_id: int):
         """
-        Consulta um drone pela coluna drone_id de forma síncrona
+        Consulta um drone pela coluna drone_id de forma síncrona.
         """
         logging.info(f"Consultando drone com drone_id: {drone_id}")
         
