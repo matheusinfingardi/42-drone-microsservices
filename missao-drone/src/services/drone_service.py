@@ -1,10 +1,13 @@
 import logging
 from src.infrastructure.supabase_integration import get_supabase_client
+from concurrent.futures import ThreadPoolExecutor
+import asyncio
 
 class DroneService:
     def __init__(self):
         # Inicializa o cliente do Supabase
         self.client = get_supabase_client()
+        self.executor = ThreadPoolExecutor()
 
     async def get_drone_by_id(self, drone_id: int):
         """
@@ -13,8 +16,11 @@ class DroneService:
         logging.info(f"Consultando drone com drone_id: {drone_id}")
         
         try:
-            # Consultando o drone na tabela 'drone' pelo drone_id
-            data = await self.client.table('drone').select('*').eq('drone_id', drone_id).single()
+            # Uso de run_in_executor para operações síncronas em contexto assíncrono
+            data = await asyncio.get_running_loop().run_in_executor(
+                self.executor,
+                lambda: self.client.table('drone').select('*').eq('drone_id', drone_id).single()
+            )
 
             if data:
                 logging.info(f"Resultado da consulta: {data}")
@@ -34,8 +40,11 @@ class DroneService:
         logging.info(f"Criando novo drone com os dados: {drone_data}")
         
         try:
-            # Inserindo o novo drone na tabela
-            response = await self.client.table('drone').insert(drone_data).execute()
+            # Inserindo o novo drone usando run_in_executor para manter o código assíncrono
+            response = await asyncio.get_running_loop().run_in_executor(
+                self.executor,
+                lambda: self.client.table('drone').insert(drone_data).execute()
+            )
             
             if response.status_code == 201:
                 logging.info(f"Drone criado com sucesso: {response.data}")
