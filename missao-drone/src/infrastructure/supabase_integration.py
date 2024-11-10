@@ -1,9 +1,12 @@
-# app/infrastructure/supabase_client.py
-
+# src/infrastructure/supabase_integration.py
 import os
-from supabase_client import create_client, Client
+from supabase import create_client, Client  # Importando corretamente o cliente Supabase
 
 def get_supabase_client() -> Client:
+    """
+    Retorna uma instância do cliente Supabase configurado.
+    Lê as variáveis de ambiente SUPABASE_URL e SUPABASE_KEY.
+    """
     url = os.getenv("SUPABASE_URL")  # Lê a URL do Supabase da variável de ambiente
     key = os.getenv("SUPABASE_KEY")  # Lê a chave do Supabase da variável de ambiente
     

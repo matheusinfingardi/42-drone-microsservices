@@ -1,6 +1,7 @@
-import os
-from src.app.interfaces.api import app  # O app Flask é importado de api.py
+# src/main.py
+from fastapi import FastAPI
+from src.app.interfaces.api import app  # Aqui o app FastAPI está em api.py
 
 if __name__ == "__main__":
-    # Só entra neste bloco quando você executar diretamente com python (não no render)
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
