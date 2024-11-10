@@ -1,4 +1,4 @@
-flask
+fast-api
 gunicorn
 mavsdk
 supabase
