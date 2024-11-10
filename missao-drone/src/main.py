@@ -1,19 +1,12 @@
 # src/main.py
 
 from fastapi import FastAPI
+from src.adapters.controllers.drone_controller import router as drone_router
 from src.adapters.controllers.connect_controller import router as connect_router
-from src.adapters.repositories.drone_repository import DroneRepository
-from src.domain.usecases.connect_drone import ConnectDrone
-from src.settings import settings
 
-# Inicializa o FastAPI
+# Inicializa a aplicação FastAPI
 app = FastAPI()
 
-# Inicializa o repositório
-drone_repo = DroneRepository()
-
-# Agora, instanciando o caso de uso, passando o drone_repo
-connect_use_case = ConnectDrone(drone_repo)
-
-# Inclui o controlador de conexão no FastAPI
+# Inclui os routers com as rotas '/drones/{drone_id}' e '/connect'
+app.include_router(drone_router)
 app.include_router(connect_router)
