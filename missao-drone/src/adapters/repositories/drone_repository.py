@@ -10,7 +10,7 @@ class DroneRepository:
 
     async def get_drone_by_id(self, drone_id: str):
         # Busca na tabela 'drone' pelo 'drone_id'
-        response = self.supabase.table('drone').select('*').eq('drone_id', drone_id).execute()
+        response = self.supabase.table('drones').select('*').eq('drone_id', drone_id).execute()
 
         if response.status_code == 200 and len(response.data) > 0:
             return response.data[0]  # Retorna o primeiro drone encontrado
