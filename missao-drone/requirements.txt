@@ -1,7 +1,5 @@
-fastapi[all]
-uvicorn
-mavsdk
-requests
+Flask
+supabase
 python-dotenv
+mavsdk
 gunicorn
-
