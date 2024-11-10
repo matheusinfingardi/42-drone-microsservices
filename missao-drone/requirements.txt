@@ -3,3 +3,4 @@ gunicorn
 mavsdk
 supabase
 python-dotenv
+uvicorn
