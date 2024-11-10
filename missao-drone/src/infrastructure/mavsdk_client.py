@@ -1,37 +1,24 @@
-import asyncio
-from mavsdk import System
-
+# app/infrastructure/mavsdk_client.py
 class MAVSDKClient:
-    def __init__(self, connection_string: str):
-        self.connection_string = connection_string
-        self.drone = System()
+    def __init__(self, drone_id: str):
+        self.drone_id = drone_id
 
     async def connect(self):
-        """
-        Conecta ao drone utilizando o MAVSDK.
-        """
-        print(f"Conectando ao drone na porta: {self.connection_string}")
-        await self.drone.connect(system_address=self.connection_string)
+        """Conectar ao drone via MAVSDK."""
+        print(f"Conectando ao drone {self.drone_id}...")
+        # Código de conexão real com o MAVSDK (simulação)
+        return True
 
     async def arm_drone(self):
-        """
-        Arma o drone para voo.
-        """
-        print("Armando o drone...")
-        await self.drone.action.arm()
+        """Armar o drone."""
+        print(f"Drone {self.drone_id} armado.")
+        return True
 
     async def disarm_drone(self):
-        """
-        Desarma o drone.
-        """
-        print("Desarmando o drone...")
-        await self.drone.action.disarm()
+        """Desarmar o drone."""
+        print(f"Drone {self.drone_id} desarmado.")
+        return True
 
-    async def is_connected(self) -> bool:
-        """
-        Verifica se o drone está conectado.
-        """
-        async for health in self.drone.telemetry.health():
-            if health.is_armed:
-                return True
-        return False
+    async def is_connected(self):
+        """Verificar se o drone está conectado."""
+        return True

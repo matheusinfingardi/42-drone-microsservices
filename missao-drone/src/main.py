@@ -1,5 +1,5 @@
 import os
-from src.interface.api import app  # O app Flask é importado de api.py
+from src.app.interfaces.api import app  # O app Flask é importado de api.py
 
 if __name__ == "__main__":
     # Só entra neste bloco quando você executar diretamente com python (não no render)

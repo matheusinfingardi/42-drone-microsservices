@@ -1,5 +1,5 @@
-Flask
+flask
+gunicorn
+mavsdk
 supabase
 python-dotenv
-mavsdk
-gunicorn
