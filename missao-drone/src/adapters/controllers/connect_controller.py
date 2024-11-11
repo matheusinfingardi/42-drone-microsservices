@@ -1,24 +1,22 @@
-# src/adapters/controllers/connect_controller.py
-
 from fastapi import APIRouter, HTTPException
+from src.services.connection_service import ConnectionService
 from src.adapters.repositories.drone_repository import DroneRepository
 
-# Instância do repositório
+# Instanciando o repositório e o serviço de conexão
 drone_repo = DroneRepository()
+connection_service = ConnectionService(drone_repo)
 
-# Criação do router para gerenciar as rotas de conexão
 router = APIRouter()
 
-# Endpoint POST para conectar ao drone
 @router.post("/connect")
 async def connect_drone(drone_id: str):
+    """Endpoint para conectar o drone"""
     try:
-        # Conecta ao drone e atualiza o status no repositório
-        result = await drone_repo.connect_to_drone(drone_id)
-
-        if result["status"] == "connected":
-            return {"message": f"Drone {drone_id} conectado com sucesso!"}
+        # Chama o serviço de conexão
+        result = await connection_service.connect_drone(drone_id)
+        if result['status'] == "success":
+            return {"message": result['message']}
         else:
-            raise HTTPException(status_code=400, detail=result.get("error", "Erro ao conectar"))
+            raise HTTPException(status_code=400, detail=result['message'])
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Erro ao conectar o drone: {str(e)}")

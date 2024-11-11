@@ -18,16 +18,3 @@ class DroneRepository:
             return response.data[0]  # Retorna o primeiro drone encontrado
         else:
             return None  # Retorna None caso o drone não seja encontrado
-
-    # Método para conectar ao drone
-    async def connect_to_drone(self, drone_id: str):
-        # Faz a consulta ao banco para verificar o status de conexão
-        response = self.supabase.table('drones').select('connection_status').eq('drone_id', drone_id).execute()
-
-        # Verifica se a resposta contém dados
-        if response.data and len(response.data) > 0:
-            # Atualiza o status de conexão no banco
-            self.supabase.table('drones').update({"connection_status": "connected"}).eq('drone_id', drone_id).execute()
-            return {"status": "connected", "drone_id": drone_id}
-        else:
-            return {"status": "failed", "error": "Drone não encontrado ou não pode ser conectado"}
